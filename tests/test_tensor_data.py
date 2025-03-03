@@ -123,3 +123,7 @@ def test_shape_broadcast() -> None:
 @given(tensor_data())
 def test_string(tensor_data: TensorData) -> None:
     tensor_data.to_string()
+
+
+if __name__ == "__main__":
+    test_permute()

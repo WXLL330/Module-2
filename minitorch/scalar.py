@@ -92,25 +92,37 @@ class Scalar:
         return Mul.apply(b, Inv.apply(self))
 
     def __add__(self, b: ScalarLike) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return Add.apply(self, b)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def __bool__(self) -> bool:
         return bool(self.data)
 
     def __lt__(self, b: ScalarLike) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return LT.apply(self, b)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def __gt__(self, b: ScalarLike) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return LT.apply(b, self)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def __eq__(self, b: ScalarLike) -> Scalar:  # type: ignore[override]
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return EQ.apply(self, b)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def __sub__(self, b: ScalarLike) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return Add.apply(self, Neg.apply(b))
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def __neg__(self) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return Neg.apply(self)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def __radd__(self, b: ScalarLike) -> Scalar:
         return self + b
@@ -119,16 +131,24 @@ class Scalar:
         return self * b
 
     def log(self) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return Log.apply(self)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def exp(self) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return Exp.apply(self)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def sigmoid(self) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return Sigmoid.apply(self)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     def relu(self) -> Scalar:
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.2.
+        return ReLU.apply(self)
+        # raise NotImplementedError("Need to implement for Task 1.2")
 
     # Variable elements for backprop
 
@@ -158,12 +178,47 @@ class Scalar:
         return self.history.inputs
 
     def chain_rule(self, d_output: Any) -> Iterable[Tuple[Variable, Any]]:
+        """
+        Computes the chain rule for backpropagation.
+
+        This method takes the derivative of the output with respect to the current
+        variable and propagates it backward through the computation graph to compute
+        the derivatives with respect to the input variables.
+
+        Args:
+            d_output (Any): The derivative of the output with respect to the current variable.
+
+        Returns:
+            Iterable[Tuple[Variable, Any]]: An iterable of tuples, where each tuple contains
+            a variable and its corresponding derivative.
+        """
         h = self.history
         assert h is not None
         assert h.last_fn is not None
         assert h.ctx is not None
 
-        raise NotImplementedError("Need to include this file from past assignment.")
+        # TODO: Implement for Task 1.3.
+        vd_list = []
+        # only for current node
+        last_d_outputs = h.last_fn._backward(h.ctx, d_output)
+        last_scalars = h.inputs
+        for last_d_output, last_scalar in zip(last_d_outputs, last_scalars):
+            if not last_scalar.is_constant():
+                vd_list.append((last_scalar, last_d_output))
+
+        # contain child node   
+        # hd_list = [(h, d_output)]
+        # for last_h, d in hd_list:
+        #     if last_h.last_fn is not None:
+        #         last_d_outputs = last_h.last_fn._backward(last_h.ctx, d)
+        #         last_scalars = last_h.inputs
+        #         for last_scalar, last_d_output in zip(last_scalars, last_d_outputs):
+        #             vd_list.append((last_scalar, last_d_output))
+        #             if (last_scalar.history, last_d_output) not in hd_list:
+        #                 hd_list.append((last_scalar.history, last_d_output))
+
+        return vd_list
+        # raise NotImplementedError("Need to implement for Task 1.3")
 
     def backward(self, d_output: Optional[float] = None) -> None:
         """
