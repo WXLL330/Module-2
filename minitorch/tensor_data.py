@@ -238,10 +238,11 @@ class TensorData:
 
         # TODO: Implement for Task 2.1.
         new_shape = []
+        new_strides = []
         for i in range(len(self.shape)):
             new_shape.append(self.shape[order[i]])
+            new_strides.append(self.strides[order[i]])
         
-        new_strides = strides_from_shape(new_shape)
         return TensorData(self._storage, tuple(new_shape), tuple(new_strides))
         # raise NotImplementedError("Need to implement for Task 2.1")
 
