@@ -269,7 +269,11 @@ def tensor_map(fn: Callable[[float], float]) -> Any:
         in_strides: Strides,
     ) -> None:
         # TODO: Implement for Task 2.3.
-        raise NotImplementedError("Need to implement for Task 2.3")
+        in_index = [0] * len(in_storage)
+        
+        for i, val in enumerate(in_storage):
+            out[i] = fn(val)
+        # raise NotImplementedError("Need to implement for Task 2.3")
 
     return _map
 

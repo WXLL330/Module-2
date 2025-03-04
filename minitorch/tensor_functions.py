@@ -237,14 +237,20 @@ class Permute(Function):
     @staticmethod
     def forward(ctx: Context, a: Tensor, order: Tensor) -> Tensor:
         # TODO: Implement for Task 2.3.
+        ctx.save_for_backward(order)
         return a.permute(order)
         # raise NotImplementedError("Need to implement for Task 2.3")
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tuple[Tensor, float]:
         # TODO: Implement for Task 2.4.
-        raise NotImplementedError("Need to implement for Task 2.4")
+        (order, ) = ctx.saved_tensors
+        inverse_order = [0] * len(order)
+        for old_pos, new_pos in enumerate(order):
+            inverse_order[new_pos] = old_pos
 
+        return grad_output.permute(tuple(inverse_order))
+        # raise NotImplementedError("Need to implement for Task 2.4")
 
 class View(Function):
     @staticmethod

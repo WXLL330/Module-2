@@ -63,15 +63,7 @@ def to_index(ordinal: int, shape: Shape, out_index: OutIndex) -> None:
 
     """
     # TODO: Implement for Task 2.1.
-    def get_strides_from_shape(shape: Shape) -> Strides:
-        layout = [1]
-        offset = 1
-        for s in reversed(shape):
-            layout.append(s * offset)
-            offset = s * offset
-        return tuple(reversed(layout[:-1]))
-    
-    strides = get_strides_from_shape(shape)
+    strides = strides_from_shape(shape)
     for i, stride in enumerate(strides):
         out_index[i] = ordinal // stride
         ordinal = ordinal % stride
