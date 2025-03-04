@@ -98,7 +98,19 @@ def broadcast_index(
         None
     """
     # TODO: Implement for Task 2.2.
-    raise NotImplementedError("Need to implement for Task 2.2")
+    small_len = len(shape)
+    big_len = len(big_shape)
+    for i in range(small_len):
+        small_rev_i = small_len - i - 1
+        big_rev_i = big_len - i - 1
+        if big_index[big_rev_i] >= shape[small_rev_i]:
+            out_index[i] = 0
+        else:
+            out_index[i] = big_index[big_rev_i]
+
+    for i in range(big_len - small_len):
+        out_index.insert(0, 0)
+    # raise NotImplementedError("Need to implement for Task 2.2")
 
 
 def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
@@ -116,7 +128,29 @@ def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
         IndexingError : if cannot broadcast
     """
     # TODO: Implement for Task 2.2.
-    raise NotImplementedError("Need to implement for Task 2.2")
+    shape1_ = list(shape1)
+    shape2_ = list(shape2)
+    len1 = len(shape1_)
+    len2 = len(shape2_)
+
+    if len1 < len2:
+        shape1_ = [1]*(len2 - len1) + shape1_
+    else:
+        shape2_ = [1]*(len1 - len2) + shape2_
+    
+    for i, (s1, s2) in enumerate(zip(shape1_, shape2_)):
+        if s1 == s2:
+            continue
+        elif s1 != s2:
+            if s1 == 1:
+                shape1_[i] = s2
+            elif s2 == 1:
+                shape2_[i] = s1
+            else:
+                raise IndexingError(f"operands could not be broadcast together with shapes {shape1} {shape2}")
+
+    return tuple(shape1_)
+    # raise NotImplementedError("Need to implement for Task 2.2")
 
 
 def strides_from_shape(shape: UserShape) -> UserStrides:

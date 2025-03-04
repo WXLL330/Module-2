@@ -126,4 +126,4 @@ def test_string(tensor_data: TensorData) -> None:
 
 
 if __name__ == "__main__":
-    test_permute()
+    test_shape_broadcast()
