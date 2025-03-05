@@ -265,13 +265,13 @@ class TensorData:
         ), f"Must give a position to each dimension. Shape: {self.shape} Order: {order}"
 
         # TODO: Implement for Task 2.1.
-        new_shape = []
-        new_strides = []
-        for i in range(len(self.shape)):
-            new_shape.append(self.shape[order[i]])
-            new_strides.append(self.strides[order[i]])
+        new_shape = tuple(self.shape[i] for i in order)
+        new_strides = tuple(self.strides[i] for i in order)
+        # for i in range(len(self.shape)):
+        #     new_shape.append(self.shape[order[i]])
+        #     new_strides.append(self.strides[order[i]])
         
-        return TensorData(self._storage, tuple(new_shape), tuple(new_strides))
+        return TensorData(self._storage, new_shape, new_strides)
         # raise NotImplementedError("Need to implement for Task 2.1")
 
     def to_string(self) -> str:

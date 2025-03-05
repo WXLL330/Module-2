@@ -385,7 +385,7 @@ def tensor_reduce(fn: Callable[[float, float], float]) -> Any:
         out_index:Index = np.zeros(len(out_shape), dtype=np.int32)
         for i in range(len(out)):
             to_index(i, out_shape, out_index)
-            for j in range(len(a_shape[reduce_dim])):
+            for j in range(a_shape[reduce_dim]):
                 a_index = out_index.copy()
                 a_index[reduce_dim] = j
                 out[i] = fn(out[i], a_storage[index_to_position(a_index, a_strides)])
