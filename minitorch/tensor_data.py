@@ -44,7 +44,7 @@ def index_to_position(index: Index, strides: Strides) -> int:
     """
 
     # TODO: Implement for Task 2.1.
-    assert len(index) == len(strides)
+    assert len(index) == len(strides), f"len index:{len(index)} and len strides:{len(strides)} dismatch"
     return (index * strides).sum()
     # raise NotImplementedError("Need to implement for Task 2.1")
 
@@ -65,6 +65,7 @@ def to_index(ordinal: int, shape: Shape, out_index: OutIndex) -> None:
     # TODO: Implement for Task 2.1.
     strides = strides_from_shape(shape)
     for i, stride in enumerate(strides):
+        # np.append(out_index, ordinal // stride)
         out_index[i] = ordinal // stride
         ordinal = ordinal % stride
     # raise NotImplementedError("Need to implement for Task 2.1")
@@ -95,13 +96,14 @@ def broadcast_index(
     for i in range(small_len):
         small_rev_i = small_len - i - 1
         big_rev_i = big_len - i - 1
-        if big_index[big_rev_i] >= shape[small_rev_i]:
-            out_index[i] = 0
-        else:
-            out_index[i] = big_index[big_rev_i]
+        if shape[small_rev_i] == 1:
+            out_index[small_rev_i] = 0
+        elif big_shape[big_rev_i] == shape[small_rev_i]:
+            out_index[small_rev_i] = big_index[big_rev_i]            
 
-    for i in range(big_len - small_len):
-        out_index.insert(0, 0)
+
+    # for i in range(big_len - small_len):
+    #     out_index.insert(0, 0)
     # raise NotImplementedError("Need to implement for Task 2.2")
 
 
