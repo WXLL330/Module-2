@@ -5,6 +5,8 @@ Be sure you have minitorch installed in you Virtual Env.
 
 import minitorch
 
+import minitorch.tensor
+
 
 def RParam(*shape):
     r = 2 * (minitorch.rand(shape) - 0.5)
@@ -22,7 +24,11 @@ class Network(minitorch.Module):
 
     def forward(self, x):
         # TODO: Implement for Task 2.5.
-        raise NotImplementedError("Need to implement for Task 2.5")
+        y = self.layer1.forward(x).relu()
+        y = self.layer2.forward(y).relu()
+        y = self.layer3.forward(y).sigmoid()
+        return y
+        # raise NotImplementedError("Need to implement for Task 2.5")
 
 
 class Linear(minitorch.Module):
@@ -33,8 +39,22 @@ class Linear(minitorch.Module):
         self.out_size = out_size
 
     def forward(self, x):
+        """
+        Performs the forward pass of the neural network layer.
+
+        Args:
+            x (Tensor): The input tensor to the layer, (***, in_size).
+
+        Returns:
+            Tensor: The output tensor after applying the layer's weights and bias.
+        """
         # TODO: Implement for Task 2.5.
-        raise NotImplementedError("Need to implement for Task 2.5")
+        x = x.view(*x.shape, 1) * self.weights.value    # x.view(*x.shape, 1) for broadcast, (***, in_size, out_size)
+        x = x.sum(len(x.shape) - 2) # reduce along the 'in_size' dim(倒数第2个dim), (***, 1, out_size)
+        x = x.view(*(x.shape[:len(x.shape)-2] + x.shape[len(x.shape)-1:]))  # remove dim 'in_size', (***, out_size)
+        x = x + self.bias.value.view(1, self.out_size)
+        return x
+        # raise NotImplementedError("Need to implement for Task 2.5")
 
 
 def default_log_fn(epoch, total_loss, correct, losses):

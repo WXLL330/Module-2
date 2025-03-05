@@ -44,8 +44,11 @@ def index_to_position(index: Index, strides: Strides) -> int:
     """
 
     # TODO: Implement for Task 2.1.
-    assert len(index) == len(strides), f"len index:{len(index)} and len strides:{len(strides)} dismatch"
-    return (index * strides).sum()
+    # assert len(index) == len(strides), f"len index:{len(index)} and len strides:{len(strides)} dismatch"
+    position = 0
+    for i, stride in zip(index, strides):
+        position += i * stride
+    return position
     # raise NotImplementedError("Need to implement for Task 2.1")
 
 
@@ -101,9 +104,6 @@ def broadcast_index(
         elif big_shape[big_rev_i] == shape[small_rev_i]:
             out_index[small_rev_i] = big_index[big_rev_i]            
 
-
-    # for i in range(big_len - small_len):
-    #     out_index.insert(0, 0)
     # raise NotImplementedError("Need to implement for Task 2.2")
 
 
